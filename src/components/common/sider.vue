@@ -1,13 +1,13 @@
 <template>
     <el-aside width="201px">
-        <el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
+        <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" unique-opened>
             <el-submenu index="1">
                 <template slot="title">
                 <i class="el-icon-service"></i>
                 <span slot="title">人员管理</span>
                 </template>
-                <el-menu-item-group>
-                <el-menu-item index="1-1"> 管理列表 </el-menu-item>
+                <el-menu-item-group style="">
+                <el-menu-item index="1-1" @click="routeChange('admin/index')"> 管理列表 </el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
             <el-submenu index="2">
@@ -53,25 +53,42 @@
 export default {
     name: 'sider',
     data() {
-      return {
-          isCollapse: this.$store.state.isCollapse,
-      };
+        return {
+            isCollapse: this.$store.state.isCollapse,
+        };
     },
     methods: {
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      }
+        handleOpen(key, keyPath) {
+            console.log(key);
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        routeChange(path) {
+            this.$router.push({
+                path: `/home/${path}`
+            })
+        },
     },
     created() {
+    },
+    mounted() {
+        this.$nextTick(() => {
+            let elItemDom = document.getElementsByClassName('el-menu-item-group__title');
+            for(let i = 0; i <= elItemDom.length - 1; i++) {
+                if(elItemDom[i].innerHTML == ""){
+                    document.getElementsByClassName('el-menu-item-group__title')[i].style.cssText = "padding:0"
+                }
+            }
+
+        })
     },
 }
 </script>
 <style lang="scss">
 .el-aside{
-    width: 201px;
+    position: relative;
+    left: -30px;
     background-color: #e4f5ef;
     height: 100%;
     .el-menu{

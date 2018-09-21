@@ -2,7 +2,7 @@
     <el-header>
       <el-row>
         <el-col :xs="4" :sm="4" :md="4" :lg="3" :xl="2"><div class="logo">后台管理</div></el-col>
-        <el-col :xs="0" :sm="2" :md="2" :lg="2" :xl="2"><div class="pos-tips">首页</div></el-col>
+        <el-col :xs="0" :sm="2" :md="2" :lg="2" :xl="2"><div class="pos-tips"><img :src="logoUrl" alt="logo"></div></el-col>
         <el-col :xs="0" :sm="7" :md="9" :lg="11" :xl="15"><div class=""></div></el-col>
         <el-col :xs="20" :sm="11" :md="9" :lg="8" :xl="5">
           <div class="opt">   
@@ -15,10 +15,10 @@
                 <el-dropdown-item command="logout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-            <div class="sear">
+            <div :class="{ active: inputStatus, sear: true}">
               <div class="sear-logo"><i class="el-icon-search"></i></div>
               <div class="sear-text">
-                <input type="text">
+                <input type="text" v-on:focus="inputFocus" @blur="inputBlur">
               </div>
             </div>
           </div>
@@ -32,7 +32,8 @@ export default {
     name: 'backheader',
     data() {
         return {
-
+          logoUrl: require('../../assets/img/xlaobai.png'),
+          inputStatus: false
         }
     },
     methods: {
@@ -46,6 +47,12 @@ export default {
         localStorage.removeItem('aid');
         localStorage.removeItem('token');
         this.$router.push('/login');
+      },
+      inputFocus() {
+        this.inputStatus = true
+      },
+      inputBlur() {
+        this.inputStatus = false
       }
     }
 }
@@ -61,12 +68,19 @@ export default {
   }
 
   .logo {
-    margin-top:20px;
+    height: 60px;
+    line-height: 60px;
+    font-size: 24px;    
   }
 
   .pos-tips {
     text-align: left;
-    padding:20px 0px 0px 20px;
+
+    img {
+      margin-top: 17px;
+      width: 25px;
+      height: 30px;
+    }
   }
 
   .opt {
@@ -105,6 +119,12 @@ export default {
           background-color: transparent;
         }
       }
+
+      
+    }
+
+    .active {
+      box-shadow: 0 0 10px #42b983;
     }
 
     .el-dropdown {
@@ -122,6 +142,12 @@ export default {
       border-radius: 20px;  
       background-color: #42b983;  
     }
+  }
+}
+
+@media only screen and (max-width: 500px){
+  .el-header .opt .sear {
+    display: none;
   }
 }
 </style>

@@ -1,21 +1,7 @@
-# back_blog
+# back_admin
 
-## Project setup
+## 进度
 ```
-npm install
-```
+完成整体架构和登录逻辑
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+增加登录页,头部和管理模块样式

@@ -8,6 +8,8 @@ module.exports = {
       // 为开发环境修改配置...
       console.log('env');
       config.devtool('eval-source-map').cache(false);
+      const eslRule = config.module.rule('eslint');
+      eslRule.uses.clear();
     }
   }
 }

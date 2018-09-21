@@ -7,11 +7,21 @@ export default [
         component: lazyLoading('home'),
         children: [
             {
-                name: 'admin',
-                path: 'admin',
+                name: 'adminIndex',
+                path: 'admin/index',
                 component: lazyLoading('admin/list')
+            },
+            {
+                name: 'adminAdd',
+                path: 'admin/add',
+                component: lazyLoading('admin/add')
+            },
+            {
+                name: 'adminEdit',
+                path: 'admin/edit/:id',
+                component: lazyLoading('admin/edit')
             }
-        ] 
+        ]
     },
     {
         name: 'login',

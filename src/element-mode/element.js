@@ -22,6 +22,11 @@ import {
     Button,
     Input,
     Message,
+    Table,
+    TableColumn,
+    Popover,
+    Tag,
+    Pagination
 } from 'element-ui';
 
 Vue.use(Loading);
@@ -47,3 +52,8 @@ Message.install = function (Vue, options) {
     Vue.prototype.$message = Message
 }
 Vue.use(Message);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Popover);
+Vue.use(Tag);
+Vue.use(Pagination);

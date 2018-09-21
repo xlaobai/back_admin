@@ -76,6 +76,9 @@ export default {
 <style lang="scss">
     .loginBack {
         background-color: #9e9e9e;
+        background-image: url('../../assets/img/login_back.jpg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
         position: absolute;
         width: 100%;
         top: 0px;
@@ -85,12 +88,12 @@ export default {
             border-radius: 5px;
             -moz-border-radius: 5px;
             background-clip: padding-box;
-            margin: 180px auto;
+            margin: 220px auto;
             width: 350px;
             padding: 20px 35px 15px;
-            background: #fff;
+            background:rgba(255, 255, 255, 0.65);
             border: 1px solid #eaeaea;
-            box-shadow: 0 0 25px #cac6c6;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.65);
 
             h3{
                 margin: 10px 0px 25px;

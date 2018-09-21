@@ -46,7 +46,7 @@ export default {
 }
 
 .el-main {
-  overflow-y: scroll;
+    padding: 20px 40px 20px 10px;
 }
 </style>
 
