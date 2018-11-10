@@ -1,10 +1,7 @@
 <template>
 <el-form ref="form" :model="form" label-width="80px">
     <el-form-item label="用户名">
-        <el-input v-model="form.name"></el-input>
-    </el-form-item>
-    <el-form-item label="密码">
-        <el-input v-model="form.password"></el-input>
+        <el-input v-model="form.catename"></el-input>
     </el-form-item>
     <el-form-item>
         <el-button type="primary" @click="onSubmit">立即修改</el-button>
@@ -14,8 +11,6 @@
 </template>
 
 <script>
-import natives from '@/assets/js/axios.js';
-
 export default {
   name: "adminEdit",
   data() {
@@ -27,17 +22,15 @@ export default {
     };
   },
   methods: {
-    async onSubmit() {
-
+    onSubmit() {
+      console.log("submit!");
     },
     back() {
         this.$router.go(-1);
     }
   },
   created(){
-      natives.get(`/api/admin/lst?id=${this.$route.params.id}`).then((res) => {
-          console.log(res);
-      })
+      console.log(this.$route.params.id);
   }
 };
 </script>

@@ -22,11 +22,7 @@ export default {
     this.$store.commit('changeLoading', true);
     if(!localStorage.getItem('aid'))
     {
-      this.$router.push('/login');
-    }
-    if( window.location.pathname == "/" ) 
-    {
-      this.$router.push('/home');
+        this.$router.push('/login');
     }
   },
 }

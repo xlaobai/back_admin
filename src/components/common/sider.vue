@@ -16,7 +16,7 @@
                 <span slot="title">导航管理</span>
                 </template>
                 <el-menu-item-group>
-                <el-menu-item index="2-1">导航列表</el-menu-item>
+                <el-menu-item index="2-1" @click="routeChange('nav/index')">导航列表</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
             <el-submenu index="3">
@@ -25,7 +25,7 @@
                 <span slot="title">文章管理</span>
                 </template>
                 <el-menu-item-group>
-                <el-menu-item index="3-1">文章列表</el-menu-item>
+                <el-menu-item index="3-1" @click="routeChange('article/index')">文章列表</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
             <el-submenu index="4">
@@ -34,18 +34,18 @@
                 <span slot="title">标题管理</span>
                 </template>
                 <el-menu-item-group>
-                <el-menu-item index="4-1">标签列表</el-menu-item>
+                <el-menu-item index="4-1" @click="routeChange('tag/index')">标签列表</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="5">
+            <!-- <el-submenu index="5">
                 <template slot="title">
                 <i class="el-icon-setting"></i>
                 <span slot="title">系统配置</span>
                 </template>
                 <el-menu-item-group>
-                <el-menu-item index="5-1">友情链接</el-menu-item>
+                <el-menu-item index="5-1" disabled>友情链接</el-menu-item>
                 </el-menu-item-group>
-            </el-submenu>
+            </el-submenu> -->
         </el-menu>
     </el-aside>
 </template>

@@ -3,7 +3,7 @@
         <div class="el-message-box">
             <div class="el-message-box__header">
                 <div class="el-message-box__title">
-                    <!----><span>提示</span></div><button type="button" aria-label="Close" class="el-message-box__headerbtn"><i class="el-message-box__close el-icon-close"></i></button></div>
+                    <!----><span>提示</span></div><button type="button" aria-label="Close" class="el-message-box__headerbtn"><i class="el-message-box__close el-icon-close" @click.self="hide"></i></button></div>
             <div class="el-message-box__content">
                 <!---->
                 <div class="el-message-box__message">
@@ -38,14 +38,12 @@ export default {
         }
     },
     created(){
-        console.log(this.mboxStatus);
     },
     methods: {
         hide(){
             this.$emit('hide-confirm');
         },
         del() {
-            console.log(this.itemId);
             this.$emit('hide-confirm');
         }
     }

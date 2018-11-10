@@ -26,7 +26,8 @@ import {
     TableColumn,
     Popover,
     Tag,
-    Pagination
+    Pagination,
+    Switch
 } from 'element-ui';
 
 Vue.use(Loading);
@@ -57,3 +58,4 @@ Vue.use(TableColumn);
 Vue.use(Popover);
 Vue.use(Tag);
 Vue.use(Pagination);
+Vue.use(Switch);

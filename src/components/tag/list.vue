@@ -4,25 +4,20 @@
         <div class="bread">
             <a href="/">首页</a>
             <span>/</span>
-            <a href="/" class="active">管理列表</a>
+            <a href="/" class="active">标签列表</a>
         </div>
         <el-button size="mini" type="success" @click="handleAdd">增加</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" border>
         <el-table-column label="管理员" header-align="center">
             <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                <p>住址: {{ scope.row.address }}</p>
-                <div slot="reference" class="name-wrapper">
-                    <el-tag size="medium">{{ scope.row.username }}</el-tag>
-                </div>
-                </el-popover>
+                <el-tag size="medium">{{ scope.row.name }}</el-tag>
             </template>
         </el-table-column>
         <el-table-column label="日期" width="200" header-align="center">
             <template slot-scope="scope">
                 <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.date ? '2222' : '111' }}</span>
+                <span style="margin-left: 10px">{{ scope.row.date }}</span>
             </template>
         </el-table-column>
         <el-table-column label="操作"  width="200" header-align="center">
@@ -41,34 +36,27 @@
 
 <script>
 import confirmbox from '../common/confirmbox'
-import natives from '@/assets/js/axios';
 
 export default {
     name: 'adminList',
     data() {
         return {
-            tableData: [],
+            tableData: [{
+                id: 1,
+                date: '2016-05-02',
+                name: '热门'
+            }, {
+                id: 2,
+                date: '2016-05-04',
+                name: '推荐'
+            }, {
+                id: 3,
+                date: '2016-05-01',
+                name: '搞笑'
+            }],
             delId: 0,
             mboxStatus: false
         }
-    },
-    created() {
-        natives.get('/api/admin/lst').then((res) => {
-            if(res.state == 1) {
-                this.tableData = res.data;
-            } 
-        })
-    },
-    mounted(){
-        this.$nextTick(() => {
-            // this.$message({
-            //     type: 'success',
-            //     message: '删除成功!'
-            // });
-        })
-    },
-    components: {
-        'confirm-box': confirmbox
     },
     methods: {
         handleEdit(index, id) {
@@ -83,13 +71,24 @@ export default {
         },
         changeRouter(path) {
             this.$router.push({
-                path: `/home/admin${path}`
+                path: `/home/tag${path}`
             })
         },
         hideConfirm(){
             this.mboxStatus = false
         }
     },
+    mounted(){
+        this.$nextTick(() => {
+            // this.$message({
+            //     type: 'success',
+            //     message: '删除成功!'
+            // });
+        })
+    },
+    components: {
+        'confirm-box': confirmbox
+    }
 }
 </script>
 

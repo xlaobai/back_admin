@@ -20,6 +20,51 @@ export default [
                 name: 'adminEdit',
                 path: 'admin/edit/:id',
                 component: lazyLoading('admin/edit')
+            },
+            {
+                name: 'navIndex',
+                path: 'nav/index',
+                component: lazyLoading('nav/list')
+            },
+            {
+                name: 'navAdd',
+                path: 'nav/add',
+                component: lazyLoading('nav/add')
+            },
+            {
+                name: 'navEdit',
+                path: 'nav/edit/:id',
+                component: lazyLoading('nav/edit')
+            },
+            {
+                name: 'articleIndex',
+                path: 'article/index',
+                component: lazyLoading('article/list')
+            },
+            {
+                name: 'articleAdd',
+                path: 'article/add',
+                component: lazyLoading('article/add')
+            },
+            {
+                name: 'articleEdit',
+                path: 'article/edit/:id',
+                component: lazyLoading('article/edit')
+            },
+            {
+                name: 'tagIndex',
+                path: 'tag/index',
+                component: lazyLoading('tag/list')
+            },
+            {
+                name: 'tagAdd',
+                path: 'tag/add',
+                component: lazyLoading('tag/add')
+            },
+            {
+                name: 'tagEdit',
+                path: 'tag/edit/:id',
+                component: lazyLoading('tag/edit')
             }
         ]
     },

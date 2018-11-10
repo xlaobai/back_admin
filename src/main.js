@@ -7,7 +7,7 @@ import stores from './store/store'
 import './element-mode/element'
 import axios from 'axios';
  
-axios.defaults.baseURL = 'http://xlaobai.cn:8080';
+axios.defaults.baseURL = '/proxy';
 axios.defaults.timeout = 1000 * 15;
 axios.defaults.headers['Content-Type'] = 'application/json';
 
@@ -23,6 +23,8 @@ const router = new VueRouter({
 const store = new Vuex.Store(stores);
 
 window.axios = axios;
+window.router = router;
+window.store = store;
 
 new Vue({
   router,
