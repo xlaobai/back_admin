@@ -50,21 +50,6 @@ export default [
                 name: 'articleEdit',
                 path: 'article/edit/:id',
                 component: lazyLoading('article/edit')
-            },
-            {
-                name: 'tagIndex',
-                path: 'tag/index',
-                component: lazyLoading('tag/list')
-            },
-            {
-                name: 'tagAdd',
-                path: 'tag/add',
-                component: lazyLoading('tag/add')
-            },
-            {
-                name: 'tagEdit',
-                path: 'tag/edit/:id',
-                component: lazyLoading('tag/edit')
             }
         ]
     },

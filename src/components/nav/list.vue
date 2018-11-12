@@ -9,15 +9,9 @@
         <el-button size="mini" type="success" @click="handleAdd">增加</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" border>
-        <el-table-column label="类型" header-align="center">
+        <el-table-column label="导航类型" header-align="center">
             <template slot-scope="scope">
-                <el-tag size="medium">{{ scope.row.name }}</el-tag>
-            </template>
-        </el-table-column>
-        <el-table-column label="日期" width="200" header-align="center">
-            <template slot-scope="scope">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                <span style="margin-left: 10px">{{ scope.row.catename}}</span>
             </template>
         </el-table-column>
         <el-table-column label="操作"  width="200" header-align="center">
@@ -28,39 +22,88 @@
             </template>
             </el-table-column>
         </el-table>
-        <el-pagination small background layout="prev, pager, next" :total="50">
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="total">
         </el-pagination>
-        <confirm-box v-show="mboxStatus" :item-id="delId" v-on:hide-confirm="hideConfirm"></confirm-box>
+        <confirm-box v-if="mboxStatus" :routePath="delPath" @hide-confirm="hideConfirm" @get-list="getList"></confirm-box>
     </div>
 </template>
 
 <script>
 import confirmbox from '../common/confirmbox'
+import natives from '@/assets/js/axios';
 
 export default {
-    name: 'adminList',
+    name: 'navList',
     data() {
         return {
-            tableData: [{
-                id: 1,
-                date: '2016-05-02',
-                name: '前端'
-            }, {
-                id: 2,
-                date: '2016-05-04',
-                name: '后端'
-            }],
-            delId: 0,
-            mboxStatus: false
+            tableData: [],
+            delPath: "",
+            mboxStatus: false,
+            pageSize: 3,
+            total: 0,
+            currentPage: 1,
+            tempData: [],
         }
     },
+    async created() {
+        await this.getList();
+    },
+    mounted(){
+        this.$nextTick(() => {
+            // this.$message({
+            //     type: 'success',
+            //     message: '删除成功!'
+            // });
+        })
+    },
+    components: {
+        'confirm-box': confirmbox
+    },
     methods: {
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            let leng = 0;
+            let dataArr = [];
+            if( this.total <= this.pageSize*this.currentPage ){
+                leng = this.total-1;
+            } else {
+                leng = this.pageSize*this.currentPage-1;
+            }
+            for( let i = this.pageSize*(this.currentPage-1); i <= leng; i++ ) {
+                dataArr.push(this.tempData[i]);
+            }
+            this.tableData = dataArr;
+        },
+        async getList() {
+            let res = await natives.get('/api/cate/lst');
+            if(res.state == 1) {
+                this.tempData = res.data;
+                this.total = res.data.length;
+                this.currentPage = 1;
+                if( this.total <= this.pageSize ) {
+                    this.tableData = res.data;
+                } else {
+                    for( let i = this.pageSize*(this.currentPage-1); i <= this.pageSize*this.currentPage-1; i++ ) {
+                        this.tableData.push(this.tempData[i]);
+                    }
+                }
+            } 
+        },
         handleEdit(index, id) {
             this.changeRouter(`/edit/${id}`)
         },
         handleDelete(index, id) {
             this.mboxStatus = true
-            this.delId = id
+            this.delPath = `/api/cate/del?id=${id}`;
         },
         handleAdd() {
             this.changeRouter(`/add`)
@@ -74,17 +117,6 @@ export default {
             this.mboxStatus = false
         }
     },
-    mounted(){
-        this.$nextTick(() => {
-            // this.$message({
-            //     type: 'success',
-            //     message: '删除成功!'
-            // });
-        })
-    },
-    components: {
-        'confirm-box': confirmbox
-    }
 }
 </script>
 

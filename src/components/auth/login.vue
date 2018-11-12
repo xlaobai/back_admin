@@ -54,6 +54,7 @@ export default {
                 if (res.state == 1) {
                     localStorage.setItem('aid', res.data.id);
                     localStorage.setItem('token', res.data.token);
+                    this.$message.success('登录成功');
                     this.$router.push('/home');
                 } else {
                     this.$message.error(`${ res.message}`);

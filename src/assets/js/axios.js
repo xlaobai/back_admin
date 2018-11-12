@@ -21,12 +21,14 @@ function post(url, params, auth = true){
         let res = await axios.post(url, params);
         if(res.status == 200) {
             if( res.data.state == 0 && res.data.message == 'AUTO_ERROR' ) {
+                localStorage.removeItem('aid');
                 store.commit('changeLoading', true);
                 router.push('/login');
             } else {
                 resolve(res.data);
             }
         } else {
+            localStorage.removeItem('aid');
             store.commit('changeLoading', true);
             router.push('/login');
         }
@@ -46,12 +48,14 @@ function get(url, auth = true){
         let res = await axios.get(url);
         if(res.status == 200) {
             if( res.data.state == 0 && res.data.message == 'AUTO_ERROR' ) {
+                localStorage.removeItem('aid');
                 store.commit('changeLoading', true);
                 router.push('/login');
             } else {
                 resolve(res.data);
             }
         } else {
+            localStorage.removeItem('aid');
             store.commit('changeLoading', true);
             router.push('/login');
         }

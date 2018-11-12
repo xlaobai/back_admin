@@ -1,6 +1,6 @@
 <template>
 <el-form ref="form" :model="form" label-width="80px">
-    <el-form-item label="用户名">
+    <el-form-item label="导航类型">
         <el-input v-model="form.catename"></el-input>
     </el-form-item>
     <el-form-item>
@@ -11,30 +11,42 @@
 </template>
 
 <script>
+import natives from '@/assets/js/axios.js';
+
 export default {
-  name: "adminEdit",
-  data() {
-    return {
-      form: {
-        name: "",
-        password: ""
-      }
-    };
-  },
-  methods: {
-    onSubmit() {
-      console.log("submit!");
+    name: "navEdit",
+    data() {
+        return {
+            form: {
+                catename: ""
+            },
+            tempPassWd : ""
+        };
     },
-    back() {
-        this.$router.go(-1);
+    methods: {
+        async onSubmit() {
+            let res = await natives.post(`/api/cate/edit`, this.form);
+            if( res.state == 1 ) {
+                this.$message.success('编辑成功！');
+            } else {
+                this.$message.error('编辑失败！');
+            }
+            this.$router.push('/home/nav/index');
+        },
+        back() {
+            this.$router.go(-1);
+        }
+    },
+    created() {
+        natives.get(`/api/cate/lst?id=${this.$route.params.id}`).then((res) => {
+            this.form.catename = res.data[0].catename;
+            this.form.id = res.data[0].id;
+        })
     }
-  },
-  created(){
-      console.log(this.$route.params.id);
-  }
 };
 </script>
 
 <style lang="scss">
+
 </style>
 

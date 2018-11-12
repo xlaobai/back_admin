@@ -4,45 +4,25 @@
         <div class="bread">
             <a href="/">首页</a>
             <span>/</span>
-            <a href="/" class="active">管理列表</a>
+            <a href="/" class="active">文章列表</a>
         </div>
         <el-button size="mini" type="success" @click="handleAdd">增加</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" border>
-        <el-table-column label="标题" header-align="center">
+        <el-table-column label="管理员" header-align="center">
             <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">
-                <p>简介: {{ scope.row.desc }}</p>
+                <p>住址: {{ scope.row.address ? scope.row.address : '无' }}</p>
                 <div slot="reference" class="name-wrapper">
-                    <el-tag size="medium">{{ scope.row.title }}</el-tag>
+                    <el-tag size="medium">{{ scope.row.username }}</el-tag>
                 </div>
                 </el-popover>
-            </template>
-        </el-table-column>
-        <el-table-column label="作者" width="200" header-align="center">
-            <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.author }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="图片" width="250" header-align="center">
-            <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.pic }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="点击数" width="150" header-align="center">
-            <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.click }}</span>
-            </template>
-        </el-table-column>
-        <el-table-column label="是否推荐" width="150" header-align="center">
-            <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.state ? '是' : '否'}}</span>
             </template>
         </el-table-column>
         <el-table-column label="日期" width="200" header-align="center">
             <template slot-scope="scope">
                 <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.time }}</span>
+                <span style="margin-left: 10px">{{ scope.row.logintime ? scope.row.logintime : '111' }}</span>
             </template>
         </el-table-column>
         <el-table-column label="操作"  width="200" header-align="center">
@@ -53,95 +33,37 @@
             </template>
             </el-table-column>
         </el-table>
-        <el-pagination small background layout="prev, pager, next" :total="50">
+        <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="total">
         </el-pagination>
-        <confirm-box v-show="mboxStatus" :item-id="delId" v-on:hide-confirm="hideConfirm"></confirm-box>
+        <confirm-box v-if="mboxStatus" :routePath="delPath" @hide-confirm="hideConfirm" @get-list="getList"></confirm-box>
     </div>
 </template>
 
 <script>
 import confirmbox from '../common/confirmbox'
+import natives from '@/assets/js/axios';
 
 export default {
     name: 'articleList',
     data() {
         return {
-            tableData: [{
-                id: 1,
-                time:   1534142684,
-                title: 'hello',
-                desc: 'It is a second blog',
-                keywords: 'word,new',
-                content: '111',
-                contml: '',
-                author: 'xlaobai',
-                click: 7,
-                pic: '/uploads/20180813/zd01.jpg',
-                state: 1,
-                cateid: 1
-            }, {
-                id: 2,
-                time: '1534142684',
-                title: 'hello',
-                desc: 'It is a second blog',
-                keywords: 'word,new',
-                content: '111',
-                contml: '',
-                author: 'xlaobai',
-                click: 7,
-                pic: '/uploads/20180813/zd01.jpg',
-                state: 1,
-                cateid: 1
-            }, {
-                id: 3,
-                time: '1534142684',
-                title: 'hello',
-                desc: 'It is a second blog',
-                keywords: 'word,new',
-                content: '111',
-                contml: '',
-                author: 'xlaobai',
-                click: 7,
-                pic: '/uploads/20180813/zd01.jpg',
-                state: 1,
-                cateid: 1
-            }, {
-                id: 4,
-                time: '1534142684',
-                title: 'hello',
-                desc: 'It is a second blog',
-                keywords: 'word,new',
-                content: '111',
-                contml: '',
-                author: 'xlaobai',
-                click: 7,
-                pic: '/uploads/20180813/zd01.jpg',
-                state: 1,
-                cateid: 1
-            }],
-            delId: 0,
-            mboxStatus: false
+            tableData: [],
+            delPath: "",
+            mboxStatus: false,
+            pageSize: 3,
+            total: 0,
+            currentPage: 1,
+            tempData: [],
         }
     },
-    methods: {
-        handleEdit(index, id) {
-            this.changeRouter(`/edit/${id}`)
-        },
-        handleDelete(index, id) {
-            this.mboxStatus = true
-            this.delId = id
-        },
-        handleAdd() {
-            this.changeRouter(`/add`)
-        },
-        changeRouter(path) {
-            this.$router.push({
-                path: `/home/article${path}`
-            })
-        },
-        hideConfirm(){
-            this.mboxStatus = false
-        }
+    async created() {
+        await this.getList();
     },
     mounted(){
         this.$nextTick(() => {
@@ -153,7 +75,59 @@ export default {
     },
     components: {
         'confirm-box': confirmbox
-    }
+    },
+    methods: {
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            let leng = 0;
+            let dataArr = [];
+            if( this.total <= this.pageSize*this.currentPage ){
+                leng = this.total-1;
+            } else {
+                leng = this.pageSize*this.currentPage-1;
+            }
+            for( let i = this.pageSize*(this.currentPage-1); i <= leng; i++ ) {
+                dataArr.push(this.tempData[i]);
+            }
+            this.tableData = dataArr;
+        },
+        async getList() {
+            let res = await natives.get('/api/admin/lst');
+            if(res.state == 1) {
+                this.tempData = res.data;
+                this.total = res.data.length;
+                this.currentPage = 1;
+                if( this.total <= this.pageSize ) {
+                    this.tableData = res.data;
+                } else {
+                    for( let i = this.pageSize*(this.currentPage-1); i <= this.pageSize*this.currentPage-1; i++ ) {
+                        this.tableData.push(this.tempData[i]);
+                    }
+                }
+            } 
+        },
+        handleEdit(index, id) {
+            this.changeRouter(`/edit/${id}`)
+        },
+        handleDelete(index, id) {
+            this.mboxStatus = true
+            this.delPath = `/api/admin/del?id=${id}`;
+        },
+        handleAdd() {
+            this.changeRouter(`/add`)
+        },
+        changeRouter(path) {
+            this.$router.push({
+                path: `/home/admin${path}`
+            })
+        },
+        hideConfirm(){
+            this.mboxStatus = false
+        }
+    },
 }
 </script>
 

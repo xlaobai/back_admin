@@ -28,24 +28,6 @@
                 <el-menu-item index="3-1" @click="routeChange('article/index')">文章列表</el-menu-item>
                 </el-menu-item-group>
             </el-submenu>
-            <el-submenu index="4">
-                <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">标题管理</span>
-                </template>
-                <el-menu-item-group>
-                <el-menu-item index="4-1" @click="routeChange('tag/index')">标签列表</el-menu-item>
-                </el-menu-item-group>
-            </el-submenu>
-            <!-- <el-submenu index="5">
-                <template slot="title">
-                <i class="el-icon-setting"></i>
-                <span slot="title">系统配置</span>
-                </template>
-                <el-menu-item-group>
-                <el-menu-item index="5-1" disabled>友情链接</el-menu-item>
-                </el-menu-item-group>
-            </el-submenu> -->
         </el-menu>
     </el-aside>
 </template>
@@ -59,10 +41,10 @@ export default {
     },
     methods: {
         handleOpen(key, keyPath) {
-            console.log(key);
+            // console.log(key);
         },
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         },
         routeChange(path) {
             this.$router.push({
