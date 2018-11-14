@@ -27,7 +27,10 @@ import {
     Popover,
     Tag,
     Pagination,
-    Switch
+    Switch,
+    Select,
+    Option,
+    Upload
 } from 'element-ui';
 
 Vue.use(Loading);
@@ -59,3 +62,6 @@ Vue.use(Popover);
 Vue.use(Tag);
 Vue.use(Pagination);
 Vue.use(Switch);
+Vue.use(Select);
+Vue.use(Option);
+Vue.use(Upload);

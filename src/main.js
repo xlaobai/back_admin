@@ -8,6 +8,7 @@ import './element-mode/element'
 import axios from 'axios';
  
 // axios.defaults.baseURL = '/proxy';          //dev
+// axios.defaults.baseURL = 'http://demo.fightphp.com';     //dev 
 axios.defaults.baseURL = 'http://xlaobai.cn:8082';          //pro
 axios.defaults.timeout = 1000 * 15;
 axios.defaults.headers['Content-Type'] = 'application/json';

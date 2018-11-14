@@ -4,25 +4,45 @@
         <div class="bread">
             <a href="/">首页</a>
             <span>/</span>
-            <a href="/" class="active">文章列表</a>
+            <a href="/" class="active">管理列表</a>
         </div>
         <el-button size="mini" type="success" @click="handleAdd">增加</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" border>
-        <el-table-column label="管理员" header-align="center">
+        <el-table-column label="标题" header-align="center">
             <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">
-                <p>住址: {{ scope.row.address ? scope.row.address : '无' }}</p>
+                <p>简介: {{ scope.row.desc ? scope.row.desc : '无' }}</p>
                 <div slot="reference" class="name-wrapper">
-                    <el-tag size="medium">{{ scope.row.username }}</el-tag>
+                    <el-tag size="medium">{{ scope.row.title }}</el-tag>
                 </div>
                 </el-popover>
+            </template>
+        </el-table-column>
+        <el-table-column label="作者" width="100" header-align="center">
+            <template slot-scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.author }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="缩略图" width="100" header-align="center">
+            <template slot-scope="scope">
+                <img style="height: 50px;" :src="scope.row.pic | fullPic">
+            </template>
+        </el-table-column>
+        <el-table-column label="类型" width="100" header-align="center">
+            <template slot-scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.catename }}</span>
+            </template>
+        </el-table-column>
+        <el-table-column label="点击数" width="100" header-align="center">
+            <template slot-scope="scope">
+                <span style="margin-left: 10px">{{ scope.row.click }}</span>
             </template>
         </el-table-column>
         <el-table-column label="日期" width="200" header-align="center">
             <template slot-scope="scope">
                 <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.logintime ? scope.row.logintime : '111' }}</span>
+                <span style="margin-left: 10px">{{ scope.row.time | exDate }}</span>
             </template>
         </el-table-column>
         <el-table-column label="操作"  width="200" header-align="center">
@@ -48,6 +68,7 @@
 <script>
 import confirmbox from '../common/confirmbox'
 import natives from '@/assets/js/axios';
+import util from '@/assets/js/util';
 
 export default {
     name: 'articleList',
@@ -56,7 +77,7 @@ export default {
             tableData: [],
             delPath: "",
             mboxStatus: false,
-            pageSize: 3,
+            pageSize: 6,
             total: 0,
             currentPage: 1,
             tempData: [],
@@ -95,7 +116,7 @@ export default {
             this.tableData = dataArr;
         },
         async getList() {
-            let res = await natives.get('/api/admin/lst');
+            let res = await natives.get('/api/art/lst');
             if(res.state == 1) {
                 this.tempData = res.data;
                 this.total = res.data.length;
@@ -103,6 +124,7 @@ export default {
                 if( this.total <= this.pageSize ) {
                     this.tableData = res.data;
                 } else {
+                    this.tableData = [];
                     for( let i = this.pageSize*(this.currentPage-1); i <= this.pageSize*this.currentPage-1; i++ ) {
                         this.tableData.push(this.tempData[i]);
                     }
@@ -114,20 +136,28 @@ export default {
         },
         handleDelete(index, id) {
             this.mboxStatus = true
-            this.delPath = `/api/admin/del?id=${id}`;
+            this.delPath = `/api/art/del?id=${id}`;
         },
         handleAdd() {
             this.changeRouter(`/add`)
         },
         changeRouter(path) {
             this.$router.push({
-                path: `/home/admin${path}`
+                path: `/home/article${path}`
             })
         },
         hideConfirm(){
             this.mboxStatus = false
         }
     },
+    filters: {
+        exDate(value) {
+            return util.exDate(Number(value)*1000, 1);
+        },
+        fullPic(path) {
+            return `${axios.defaults.baseURL}/static/upload/${path}`
+        }
+    }
 }
 </script>
 

@@ -65,7 +65,6 @@ export default {
     },
     async created() {
         await this.getList();
-        let time = util.exDate(1111111111111);
     },
     mounted(){
         this.$nextTick(() => {
@@ -105,6 +104,7 @@ export default {
                 if( this.total <= this.pageSize ) {
                     this.tableData = res.data;
                 } else {
+                    this.tableData = [];
                     for( let i = this.pageSize*(this.currentPage-1); i <= this.pageSize*this.currentPage-1; i++ ) {
                         this.tableData.push(this.tempData[i]);
                     }
